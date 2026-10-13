@@ -1,5 +1,4 @@
 import { getAuth } from "@clerk/express";
-import { error } from "console";
 import { Router } from "express";
 import { getLocalUser } from "../lib/users";
 
