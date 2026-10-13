@@ -5,22 +5,22 @@ import cors from "cors";
 import fs from "node:fs";
 import path from "node:path";
 
-import * as Sentry from "@sentry/node";
+// import * as Sentry from "@sentry/node";
 
 import { clerkMiddleware } from "@clerk/express";
 import { clerkWebhookHandler } from "./webhooks/clerk";
 import { getEnv } from "./lib/env";
-import keepAliveCron from "./lib/cron";
+// import keepAliveCron from "./lib/cron";
 
-import productRouter from "./routes/productRouter";
-import meRouter from "./routes/meRouter";
-import streamRouter from "./routes/streamRouter";
-import chekoutRouter from "./routes/chekoutRouter";
-import adminRouter from "./routes/adminRouter";
-import orderRouter from "./routes/orderRouter";
+// import productRouter from "./routes/productRouter";
+// import meRouter from "./routes/meRouter";
+// import streamRouter from "./routes/streamRouter";
+// import chekoutRouter from "./routes/chekoutRouter";
+// import adminRouter from "./routes/adminRouter";
+// import orderRouter from "./routes/orderRouter";
 
-import { polarWebhookHandler } from "./webhooks/polar";
-import { sentryClerkUserMiddleware } from "./middleware/sentryClerkUser";
+// import { polarWebhookHandler } from "./webhooks/polar";
+// import { sentryClerkUserMiddleware } from "./middleware/sentryClerkUser";
 
 let env = getEnv();
 
