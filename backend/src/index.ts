@@ -10,7 +10,7 @@ import path from "node:path";
 import { clerkMiddleware } from "@clerk/express";
 import { clerkWebhookHandler } from "./webhooks/clerk";
 import { getEnv } from "./lib/env";
-// import keepAliveCron from "./lib/cron";
+import keepAliveCron from "./lib/cron";
 
 // import productRouter from "./routes/productRouter";
 // import meRouter from "./routes/meRouter";
@@ -36,6 +36,10 @@ app.use(express.json());
 app.use(cors());
 app.use(clerkMiddleware());
 
+app.get("/health", (_, res) => {
+    res.json({ ok: true });
+});
+
 let publicDir = path.join(process.cwd(), "public");
 if (fs.existsSync(publicDir)) {
     app.use(express.static(publicDir));
@@ -46,15 +50,19 @@ if (fs.existsSync(publicDir)) {
             return;
         }
 
-        if(req.path.startsWith("/api") || req.path.startsWith("/webhooks")){
+        if (req.path.startsWith("/api") || req.path.startsWith("/webhooks")) {
             next();
             return;
         }
 
-        res.sendFile(path.join(publicDir,"index.html"),(err)=>next(err))
+        res.sendFile(path.join(publicDir, "index.html"), (err) => next(err));
     });
 }
 
 app.listen(env.PORT, () => {
     console.log(`SERVER IS RUNNING ON http://localhost:${env.PORT}`);
+
+    if (env.NODE_ENV === "production") {
+        keepAliveCron.start();
+    }
 });
