@@ -20,7 +20,7 @@ import chekoutRouter from "./routes/chekoutRouter";
 // import orderRouter from "./routes/orderRouter";
 
 import { polarWebhookHandler } from "./webhooks/polar";
-import { sentryClerkUserMiddleware } from "./middleware/sentryClerkUser";
+import { sentryClerkUserMiddleware } from "./middlewares/sentryClerkUser";
 
 let env = getEnv();
 
