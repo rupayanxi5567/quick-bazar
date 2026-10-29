@@ -1,5 +1,5 @@
 import { getAuth } from "@clerk/express";
-import { NextFunction, Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import { getLocalUser } from "../lib/users";
 import { isAdmin } from "../lib/roles";
 import ImageKit from "@imagekit/nodejs";
@@ -8,7 +8,6 @@ import { db } from "../db";
 import { orderItems, products } from "../db/schema";
 import { count, desc, eq } from "drizzle-orm";
 import { z } from "zod";
-import { error } from "console";
 import { deleteImageKitAsset } from "../lib/imagekit";
 
 let env = getEnv();

@@ -6,6 +6,7 @@ import { getLocalUser } from "../lib/users";
 import { db } from "../db";
 import { CheckoutSessionLine, checkoutSessions, products } from "../db/schema";
 import { and, eq, inArray } from "drizzle-orm";
+import { polarCreateCheckout } from "../lib/polar";
 
 let env = getEnv();
 
