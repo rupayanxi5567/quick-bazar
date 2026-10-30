@@ -293,5 +293,3 @@ export async function createVideoInvite(
         next(e);
     }
 }
-
- 

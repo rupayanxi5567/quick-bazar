@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createStreamChannel, getOrders, listOrders } from "../controllers/orderController";
+import { createStreamChannel, createVideoInvite, getOrders, listOrders } from "../controllers/orderController";
 
 let router = Router();
 
