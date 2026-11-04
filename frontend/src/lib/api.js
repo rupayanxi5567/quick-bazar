@@ -14,9 +14,11 @@ export async function apiFetch(path, opts = {}) {
     }
   }
 
+  const cleanPath = path.startsWith("/") ? path : `/${path}`;
+
   let res;
   try {
-    res = await fetch(`${base}${path}`, {
+    res = await fetch(`${base}${cleanPath}`, {
       method,
       headers,
       body: body !== undefined ? JSON.stringify(body) : undefined,
@@ -24,14 +26,14 @@ export async function apiFetch(path, opts = {}) {
   } catch (e) {
     Sentry.addBreadcrumb({
       category: "api",
-      message: `${method} ${path}`,
+      message: `${method} ${cleanPath}`,
       level: "error",
       data: { network: true },
     });
 
     Sentry.captureException(e, {
       tags: { "api.fetch": "network" },
-      extra: { path, method },
+      extra: { path: cleanPath, method },
     });
 
     throw e;
@@ -41,7 +43,7 @@ export async function apiFetch(path, opts = {}) {
 
   Sentry.addBreadcrumb({
     category: "api",
-    message: `${method} ${path}`,
+    message: `${method} ${cleanPath}`,
     level: res.ok ? "info" : "warning",
     data: { status: res.status },
   });
@@ -53,7 +55,7 @@ export async function apiFetch(path, opts = {}) {
     if (res.status >= 500) {
       Sentry.captureException(err, {
         tags: { "api.fetch": "http", "http.status": String(res.status) },
-        extra: { path, method, status: res.status },
+        extra: { path: cleanPath, method, status: res.status },
       });
     }
 
