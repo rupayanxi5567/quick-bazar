@@ -14,7 +14,7 @@ import OrdersPage from "./pages/OrdersPage";
 import CheckoutReturnPage from "./pages/CheckoutReturnPage";
 
 function App() {
-    let { isLoaded, isSignedIn } = useAuth();
+    let { isLoaded, isSignedIn } = useAuth(); //ok
 
     if (!isLoaded) {
         return <PageLoader />;
