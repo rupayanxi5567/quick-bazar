@@ -18,6 +18,7 @@ import { Show, SignInButton } from "@clerk/react";
 function CartPage() {
   const {
     checkout,
+    checkoutError,
     checkoutLoading,
     items,
     lines,
@@ -133,6 +134,9 @@ function CartPage() {
             </div>
 
             <Show when="signed-in">
+              {checkoutError ? (
+                <p className="mt-4 text-sm text-error" role="alert">{checkoutError}</p>
+              ) : null}
               <button
                 type="button"
                 onClick={checkout}

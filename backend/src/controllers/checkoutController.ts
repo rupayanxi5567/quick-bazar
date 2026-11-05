@@ -53,7 +53,7 @@ export async function createCheckout(
             return;
         }
 
-        let ids = parsed.data.items.map((i) => i.productId);
+        let ids = [...new Set(parsed.data.items.map((i) => i.productId))];
 
         let prodRows = await db
             .select()
@@ -62,6 +62,7 @@ export async function createCheckout(
 
         if (prodRows.length !== ids.length) {
             res.status(400).json({ error: "One or more products are invalid" });
+            return;
         }
 
         const byId = new Map(prodRows.map((p) => [p.id, p]));
@@ -80,7 +81,7 @@ export async function createCheckout(
 
         if (totalCents < 10) {
             res.status(400).json({
-                error: "Total below Polar minimum (e.g. USD requires at least 10 cents)",
+                error: "Total below Polar minimum (e.g. usd requires at least 10 cents)",
             });
             return;
         }
@@ -98,18 +99,10 @@ export async function createCheckout(
         const successUrl = `${env.FRONTEND_URL}/checkout/return?checkout_id={CHECKOUT_ID}`;
         const returnUrl = `${env.FRONTEND_URL}/cart`;
 
-        const checkout = await polarCreateCheckout(env, {
+const checkout = await polarCreateCheckout(env, {
             products: [env.POLAR_CHECKOUT_PRODUCT_ID],
-            prices: {
-                [env.POLAR_CHECKOUT_PRODUCT_ID]: [
-                    {
-                        amount_type: "fixed",
-                        price_currency: "usd",
-                        price_amount: totalCents,
-                    },
-                ],
-            },
-
+            amount: totalCents,
+            currency: "usd",
             success_url: successUrl,
             return_url: returnUrl,
             external_customer_id: userId,

@@ -7,6 +7,7 @@ import { useState } from "react";
 export default function useCartPage() {
     let { getToken } = useAuth();
     let [checkoutLoading, setCheckoutLoading] = useState(false);
+    let [checkoutError, setCheckoutError] = useState("");
 
     let items = useCart((s) => s.items);
     let setQty = useCart((s) => s.setQty);
@@ -39,6 +40,7 @@ export default function useCartPage() {
 
     async function checkout() {
         setCheckoutLoading(true);
+        setCheckoutError("");
 
         let body = {
             items: items.map((i) => ({
@@ -58,8 +60,10 @@ export default function useCartPage() {
                 window.location.href = res.checkoutUrl;
                 return;
             }
+            setCheckoutError("Checkout could not be started. Please try again.");
         } catch (error) {
             console.error("Checkout failed:", error);
+            setCheckoutError(error instanceof Error ? error.message : "Checkout failed. Please try again.");
         } finally {
             setCheckoutLoading(false);
         }
@@ -75,5 +79,6 @@ export default function useCartPage() {
         subtotal, 
         checkout,
         checkoutLoading,
+        checkoutError,
     };
 }

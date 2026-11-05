@@ -1,15 +1,12 @@
 import type { Env } from "./env.js";
 
 type CheckoutCreateBody = {
-  products: string[];
-  prices?: Record<
-    string,
-    Array<{
-      amount_type: "fixed";
-      price_amount: number;
-      price_currency: string;
-    }>
-  >;
+  products?: string[];
+  product_id?: string;
+  amount?: number;
+  custom_price_amount?: number;
+  currency?: string;
+  prices?: Record<string, any>;
   success_url: string;
   return_url?: string;
   external_customer_id?: string;
@@ -32,6 +29,8 @@ export async function polarCreateCheckout(env: Env, body: CheckoutCreateBody) {
 
   if (!res.ok) {
     const errText = await res.text();
+    // Terminal-এ Polar-এর আসল Validation Error প্রিন্ট করবে
+    console.error("Polar API Error Response:", errText); 
     throw new Error(`Polar checkout failed: ${res.status} ${errText}`);
   }
 
